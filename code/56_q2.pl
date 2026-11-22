@@ -94,3 +94,16 @@ generate_equation(Numbers, Equation) :-
     format_tree(RightTree, RightText),
     string_concat(LeftText, "=", Prefix),
     string_concat(Prefix, RightText, Equation).
+
+% all_equations(+Numbers, -Equations)
+% Collect every valid canonical equation, then remove duplicates and sort.
+% When there are no valid equations, return the empty list.
+all_equations(Numbers, Equations) :-
+    findall(Equation, generate_equation(Numbers, Equation), Candidates),
+    sort(Candidates, Equations).
+
+% count_equations(+Numbers, -N)
+% Count the unique valid equations, not the number of search paths.
+count_equations(Numbers, N) :-
+    all_equations(Numbers, Equations),
+    length(Equations, N).
