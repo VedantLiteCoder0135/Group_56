@@ -10,9 +10,12 @@ test(two_number_expression_trees) :-
     length(Trees, 4).
 
 test(input_order_preserved) :-
-    findall(Text, (expression_tree([1,2,3], Tree), format_tree(Tree, Text)), Texts),
-    assertion(member("1+(2*3)", Texts)),
-    assertion(\+ member("2+(1*3)", Texts)).
+    findall(Text,
+            (expression_tree([1,2,3], Tree),
+             format_tree(Tree, Text)),
+            Texts),
+    assertion(member("1+2*3", Texts)),
+    assertion(\+ member("2+1*3", Texts)).
 
 % Arithmetic is integer-only; invalid subexpression divisions fail.
 test(exact_division) :-
