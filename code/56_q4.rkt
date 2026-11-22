@@ -14,3 +14,17 @@
       '()
       (cons (f (car lst))
             (my-map f (cdr lst)))))
+
+;; Insert x at the front of every list shorter than n.
+;; Measure each list before inserting; recurse into nested lists,
+;; including empty lists.
+(define (insert-if-short x lst n)
+  (let ((updated
+         (my-map (lambda (item)
+                   (if (or (pair? item) (null? item))
+                       (insert-if-short x item n)
+                       item))
+                 lst)))
+    (if (< (my-length lst) n)
+        (cons x updated)
+        updated)))
