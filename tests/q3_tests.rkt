@@ -5,7 +5,8 @@
 ;; Racket's testing libraries are used only here, not in code/56_q3.rkt.
 (require rackunit
          rackunit/text-ui
-         racket/runtime-path)
+         racket/runtime-path
+         racket/port)
 
 (define-runtime-path q3-file "../code/56_q3.rkt")
 (dynamic-require q3-file #f)
