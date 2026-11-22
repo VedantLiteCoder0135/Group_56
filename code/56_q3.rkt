@@ -34,3 +34,8 @@
                          (visit (caddr node)
                                 (cons (car node) rest)))))))
     (visit tree '())))
+
+;; Print the inorder traversal on one line.
+(define (print-inorder tree)
+  (display (inorder-values tree))
+  (newline))
