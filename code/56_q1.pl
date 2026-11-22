@@ -82,3 +82,12 @@ main :-
     format('Ben = [~w, ~w, ~w]~n', [BD, BL, BP]),
     format('Carla = [~w, ~w, ~w]~n', [CD, CL, CP]),
     format('Dana = [~w, ~w, ~w]~n', [DD, DL, DP]).
+
+% Count assignments satisfying precisely the clue numbers listed in Active.
+% An empty Active list imposes no clues.
+count_solutions(Active, N) :-
+    findall(Solution,
+            (candidate_solution(Solution),
+             forall(member(Number, Active), clue(Number, Solution))),
+            Solutions),
+    length(Solutions, N).
