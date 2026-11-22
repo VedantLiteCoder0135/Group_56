@@ -15,20 +15,6 @@
       (cons (f (car lst))
             (my-map f (cdr lst)))))
 
-;; Insert x at the front of every list shorter than n.
-;; Measure each list before inserting; recurse into nested lists,
-;; including empty lists.
-(define (insert-if-short x lst n)
-  (let ((updated
-         (my-map (lambda (item)
-                   (if (or (pair? item) (null? item))
-                       (insert-if-short x item n)
-                       item))
-                 lst)))
-    (if (< (my-length lst) n)
-        (cons x updated)
-        updated)))
-
 ;; Build a recursive list transformer using a length predicate.
 ;; The list length is checked before any insertion takes place.
 (define (make-inserter x len-ok?)
@@ -44,3 +30,16 @@
                     (cons x updated)
                     updated)))))
     insert-list))
+
+;; Insert x into each list whose original length is smaller than n.
+;; Reuse the higher-order transformer; keep one final definition.
+(define (insert-if-short x lst n)
+  ((make-inserter x (lambda (len) (< len n))) lst))
+
+;; Read the input values and print only the transformed list.
+(define (print-insert-result)
+  (let* ((x (read))
+         (lst (read))
+         (n (read)))
+    (display (insert-if-short x lst n))
+    (newline)))
