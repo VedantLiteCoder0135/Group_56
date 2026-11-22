@@ -77,3 +77,20 @@ format_child(Tree, ParentPrec, Side, Text) :-
         string_concat(Opened, ")", Text)
     ;   Text = BareText
     ).
+
+% generate_equation(+Numbers, -Equation)
+% Split the numbers once at '=', construct both expression trees, and
+% accept only equal-valued expressions with valid exact divisions.
+% Equation is a canonical, space-free SWI-Prolog string.
+generate_equation(Numbers, Equation) :-
+    append(LeftNumbers, RightNumbers, Numbers),
+    LeftNumbers = [_|_],
+    RightNumbers = [_|_],
+    expression_tree(LeftNumbers, LeftTree),
+    expression_tree(RightNumbers, RightTree),
+    evaluate_tree(LeftTree, Value),
+    evaluate_tree(RightTree, Value),
+    format_tree(LeftTree, LeftText),
+    format_tree(RightTree, RightText),
+    string_concat(LeftText, "=", Prefix),
+    string_concat(Prefix, RightText, Equation).
