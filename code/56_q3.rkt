@@ -48,3 +48,23 @@
   (newline)
   (display (postorder-values tree))
   (newline))
+
+;; The empty tree has height 0; otherwise take the taller subtree.
+(define (tree-height tree)
+  (if (null? tree)
+      0
+      (+ 1 (max (tree-height (cadr tree))
+                (tree-height (caddr tree))))))
+
+;; A leaf is a nonempty node with both subtrees empty.
+(define (leaf-count tree)
+  (cond
+    ((null? tree) 0)
+    ((and (null? (cadr tree)) (null? (caddr tree))) 1)
+    (else (+ (leaf-count (cadr tree))
+             (leaf-count (caddr tree))))))
+
+;; Print (height leaf-count) on one line.
+(define (print-height-and-leaves tree)
+  (display (list (tree-height tree) (leaf-count tree)))
+  (newline))
