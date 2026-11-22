@@ -28,3 +28,19 @@
     (if (< (my-length lst) n)
         (cons x updated)
         updated)))
+
+;; Build a recursive list transformer using a length predicate.
+;; The list length is checked before any insertion takes place.
+(define (make-inserter x len-ok?)
+  (letrec ((insert-list
+            (lambda (lst)
+              (let ((updated
+                     (my-map (lambda (item)
+                               (if (or (pair? item) (null? item))
+                                   (insert-list item)
+                                   item))
+                             lst)))
+                (if (len-ok? (my-length lst))
+                    (cons x updated)
+                    updated)))))
+    insert-list))
