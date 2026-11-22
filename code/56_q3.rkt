@@ -39,3 +39,12 @@
 (define (print-inorder tree)
   (display (inorder-values tree))
   (newline))
+
+;; Print inorder, preorder, and postorder traversals on separate lines.
+(define (print-all-traversals tree)
+  (display (inorder-values tree))
+  (newline)
+  (display (preorder-values tree))
+  (newline)
+  (display (postorder-values tree))
+  (newline))
