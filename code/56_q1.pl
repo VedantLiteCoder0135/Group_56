@@ -56,3 +56,29 @@ clue(7, Solution) :-
 clue(8, Solution) :-
     member(p(_, research, Lang, data), Solution),
     Lang \= javascript.
+
+
+% Keep only complete assignments satisfying all original eight clues.
+valid_solution(Solution) :-
+    candidate_solution(Solution),
+    clue(1, Solution),
+    clue(2, Solution),
+    clue(3, Solution),
+    clue(4, Solution),
+    clue(5, Solution),
+    clue(6, Solution),
+    clue(7, Solution),
+    clue(8, Solution).
+
+% Print the first valid solution in the prescribed four-line format.
+main :-
+    once(valid_solution([
+        p('Alex', AD, AL, AP),
+        p('Ben', BD, BL, BP),
+        p('Carla', CD, CL, CP),
+        p('Dana', DD, DL, DP)
+    ])),
+    format('Alex = [~w, ~w, ~w]~n', [AD, AL, AP]),
+    format('Ben = [~w, ~w, ~w]~n', [BD, BL, BP]),
+    format('Carla = [~w, ~w, ~w]~n', [CD, CL, CP]),
+    format('Dana = [~w, ~w, ~w]~n', [DD, DL, DP]).
