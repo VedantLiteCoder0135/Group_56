@@ -43,3 +43,37 @@ evaluate_tree(op('/', Left, Right), Value) :-
     RightValue =\= 0,
     0 is LeftValue mod RightValue,
     Value is LeftValue // RightValue.
+
+% operator_precedence(+Operator, -Precedence)
+% Larger numbers bind more tightly.
+operator_precedence('+', 1).
+operator_precedence('-', 1).
+operator_precedence('*', 2).
+operator_precedence('/', 2).
+
+% format_tree(+Tree, -Text)
+% Turn a tree into its unique canonical, space-free Prolog string.
+format_tree(num(N), Text) :-
+    number_string(N, Text).
+
+format_tree(op(Operator, Left, Right), Text) :-
+    operator_precedence(Operator, ParentPrec),
+    format_child(Left, ParentPrec, left, LeftText),
+    format_child(Right, ParentPrec, right, RightText),
+    atom_string(Operator, OperatorText),
+    string_concat(LeftText, OperatorText, Prefix),
+    string_concat(Prefix, RightText, Text).
+
+% Left child: parentheses only at lower precedence.
+% Right child: parentheses at lower OR equal precedence.
+format_child(Tree, ParentPrec, Side, Text) :-
+    format_tree(Tree, BareText),
+    (   Tree = op(ChildOperator, _, _),
+        operator_precedence(ChildOperator, ChildPrec),
+        (   ChildPrec < ParentPrec
+        ;   Side == right, ChildPrec =:= ParentPrec
+        )
+    ->  string_concat("(", BareText, Opened),
+        string_concat(Opened, ")", Text)
+    ;   Text = BareText
+    ).
