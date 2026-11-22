@@ -91,3 +91,7 @@ count_solutions(Active, N) :-
              forall(member(Number, Active), clue(Number, Solution))),
             Solutions),
     length(Solutions, N).
+
+% CLUE 9: The friend who prefers AI projects works in the testing department.
+clue(9, Solution) :-
+    member(p(_, testing, _, 'AI'), Solution).
